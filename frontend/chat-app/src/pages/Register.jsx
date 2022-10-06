@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Logo.png";
 import useInput from "../hooks/use-input";
 import PasswordRequisite from "../PasswordRequisite";
+import axios from "axios";
+import { registerRoute } from "../utils/apiRoutes";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [pwdRequisite, setPwdRequisite] = useState(false);
   const [checks, setChecks] = useState({
     capsLetterCheck: false,
@@ -97,106 +102,136 @@ const Register = () => {
     formIsValid = true;
   }
 
-  const handleSubmit = (event) => {
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 6000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("chat-app-user")) {
+      navigate("/");
+    }
+  }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (
       !enteredUsernameIsValid &&
       !enteredEmailIsValid &&
       !enteredPasswordIsValid &&
-      enteredConfirmPasswordIsValid
+      !enteredConfirmPasswordIsValid
     ) {
       return;
     }
-    alert("form");
+
+    const { data } = await axios.post(registerRoute, {
+      username: enteredUsername,
+      email: enteredEmail,
+      password: enteredPassword,
+    });
+    if (data.status === false) {
+      toast.error(data.msg, toastOptions);
+    }
+    if (data.status === true) {
+      localStorage.setItem("chat-app-user", JSON.stringify(data.user));
+      navigate("/");
+    }
+
     resetUsernameInput();
     resetEmailInput();
     resetPasswordInput();
     resetConfirmPasswordInput();
   };
   return (
-    <FormContainer>
-      <form onSubmit={(event) => handleSubmit(event)}>
-        <div className="brand">
-          <img src={logo} alt="" />
-          <h1>C H A T</h1>
-        </div>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Username"
-          onChange={usernameChangeHandler}
-          onBlur={usernameBlurHandler}
-          value={enteredUsername}
-        />
-        {usernameInputHasError && (
-          <Paragraph color="red">Username field cannot be empty</Paragraph>
-        )}
-        {enteredUsernameIsValid && (
-          <Paragraph color="green">Looks good!</Paragraph>
-        )}
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Email"
-          onChange={emailChangeHandler}
-          onBlur={emailBlurHandler}
-          value={enteredEmail}
-        />
-        {emailInputHasError && (
-          <Paragraph color="red">
-            Email must include @ and not be empty
-          </Paragraph>
-        )}
-        {enteredEmailIsValid && (
-          <Paragraph color="green">Looks good!</Paragraph>
-        )}
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
-          onChange={passwordChangeHandler}
-          onBlur={passwordBlurHandler}
-          onFocus={passwordFocusHandler}
-          value={enteredPassword}
-          onKeyUp={handleOnKeyUp}
-        />
-        {pwdRequisite && !enteredPasswordIsValid ? (
-          <PasswordRequisite
-            capsLetterFlag={checks.capsLetterCheck ? "green" : "red"}
-            numberFlag={checks.numberCheck ? "green" : "red"}
-            pwdLengthFlag={checks.pwdLengthCheck ? "green" : "red"}
-            specialCharFlag={checks.specialCharCheck ? "green" : "red"}
+    <>
+      <FormContainer>
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <div className="brand">
+            <img src={logo} alt="" />
+            <h1>C H A T</h1>
+          </div>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Username"
+            onChange={usernameChangeHandler}
+            onBlur={usernameBlurHandler}
+            value={enteredUsername}
           />
-        ) : null}
-        {enteredPasswordIsValid && (
-          <Paragraph color="green">Looks good!</Paragraph>
-        )}
-        <input
-          type="Password"
-          name="confirmPassword"
-          id="confirmPassword"
-          placeholder="Confirm Password"
-          onChange={confirmPasswordChangeHandler}
-          onFocus={confirmPasswordBlurHandler}
-          value={enteredConfirmPassword}
-        />
-        {confirmPasswordInputHasError && (
-          <Paragraph color="red">Password does not match!</Paragraph>
-        )}
-        {enteredConfirmPasswordIsValid && (
-          <Paragraph color="green">Passwords match!</Paragraph>
-        )}
-        <button disabled={!formIsValid} type="submit">
-          Sign Up
-        </button>
-        <span>
-          Already have an account? <Link to="/login">Login</Link>
-        </span>
-      </form>
-    </FormContainer>
+          {usernameInputHasError && (
+            <Paragraph color="red">Username field cannot be empty</Paragraph>
+          )}
+          {enteredUsernameIsValid && (
+            <Paragraph color="green">Looks good!</Paragraph>
+          )}
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
+            value={enteredEmail}
+          />
+          {emailInputHasError && (
+            <Paragraph color="red">
+              Email must include @ and not be empty
+            </Paragraph>
+          )}
+          {enteredEmailIsValid && (
+            <Paragraph color="green">Looks good!</Paragraph>
+          )}
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            onChange={passwordChangeHandler}
+            onBlur={passwordBlurHandler}
+            onFocus={passwordFocusHandler}
+            value={enteredPassword}
+            onKeyUp={handleOnKeyUp}
+          />
+          {pwdRequisite && !enteredPasswordIsValid ? (
+            <PasswordRequisite
+              capsLetterFlag={checks.capsLetterCheck ? "green" : "red"}
+              numberFlag={checks.numberCheck ? "green" : "red"}
+              pwdLengthFlag={checks.pwdLengthCheck ? "green" : "red"}
+              specialCharFlag={checks.specialCharCheck ? "green" : "red"}
+            />
+          ) : null}
+          {enteredPasswordIsValid && (
+            <Paragraph color="green">Looks good!</Paragraph>
+          )}
+          <input
+            type="Password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+            onChange={confirmPasswordChangeHandler}
+            onFocus={confirmPasswordBlurHandler}
+            value={enteredConfirmPassword}
+          />
+          {confirmPasswordInputHasError && (
+            <Paragraph color="red">Password does not match!</Paragraph>
+          )}
+          {enteredConfirmPasswordIsValid && (
+            <Paragraph color="green">Passwords match!</Paragraph>
+          )}
+          <button disabled={!formIsValid} type="submit">
+            Sign Up
+          </button>
+          <span>
+            Already have an account? <Link to="/login">Login</Link>
+          </span>
+        </form>
+      </FormContainer>
+      <ToastContainer />
+    </>
   );
 };
 
