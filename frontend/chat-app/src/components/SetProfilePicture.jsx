@@ -13,8 +13,44 @@ const SetProfilePicture = () => {
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 6000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
 
-  const setProfilePicture = async () => {};
+  useEffect(() => {
+    if (!localStorage.getItem("chat-app-user")) {
+      navigate("/login");
+    }
+  }, []);
+
+  const setProfilePicture = async () => {
+    if (selectedAvatar === undefined) {
+      toast.error("Please choose an avatar", toastOptions);
+    } else {
+      const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+      const { data } = await axios.post(
+        `${setProfilePictureRoute}/${user._id}`,
+        {
+          image: avatars[selectedAvatar],
+        }
+      );
+      if (data.isSet) {
+        user.isProfilePicSet = true;
+        user.profilePic = data.image;
+        localStorage.setItem("chat-app-user", JSON.stringify(user));
+        navigate("/");
+      } else {
+        toast.error(
+          "Error setting profile picture. Please try again!",
+          toastOptions
+        );
+      }
+    }
+  };
   useEffect(() => {
     const fetchPictures = async () => {
       const data = [];
@@ -32,26 +68,30 @@ const SetProfilePicture = () => {
   }, []);
 
   return (
-    <Container>
-      <TitleContainer>
-        <Title>Choose your profile avatar</Title>
-      </TitleContainer>
-      <AvatarsContainer>
-        {console.log(avatars)}
-        {avatars.map((avatar, index) => {
-          return (
-            <Avatar>
-              <img
-                height="80rem"
-                src={`data:image/svg+xml;base64,${avatar}`}
-                alt="avatar"
-                key={avatar}
-              />
-            </Avatar>
-          );
-        })}
-      </AvatarsContainer>
-    </Container>
+    <>
+      <Container>
+        <TitleContainer>
+          <Title>Choose your profile avatar</Title>
+        </TitleContainer>
+        <AvatarsContainer>
+          {console.log(avatars)}
+          {avatars.map((avatar, index) => {
+            return (
+              <Avatar selected={selectedAvatar === index ? true : false}>
+                <Image
+                  src={`data:image/svg+xml;base64,${avatar}`}
+                  alt="avatar"
+                  key={avatar}
+                  onClick={() => setSelectedAvatar(index)}
+                />
+              </Avatar>
+            );
+          })}
+        </AvatarsContainer>
+        <Button onClick={setProfilePicture}>Set Profile Picture</Button>
+      </Container>
+      <ToastContainer />
+    </>
   );
 };
 
@@ -66,6 +106,11 @@ const Container = styled.div`
   width: 100vw;
 `;
 
+const Image = styled.img`
+  height: 6rem;
+  transition: 0.5s ease-in-out;
+`;
+
 const Title = styled.h1`
   color: aqua;
 `;
@@ -78,6 +123,27 @@ const Avatar = styled.div`
   justify-content: center;
   align-items: center;
   transition: 0.5s ease-in-out;
+  border: ${(props) => props.selected && "0.4rem solid indigo"};
+  &:hover {
+    border: 0.4rem solid indigo;
+    cursor: pointer;
+  }
+`;
+
+const Button = styled.button`
+  background-color: teal;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition: 0.5s ease-in-out;
+  &:hover {
+    background-color: #591c85;
+  }
 `;
 
 const TitleContainer = styled.div``;

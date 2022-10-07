@@ -9,16 +9,10 @@ const PasswordRequisite = ({
 }) => {
   return (
     <>
-      <Paragraph color={capsLetterFlag}>
-        Must contain 1 Capital Letter
-      </Paragraph>
-      <Paragraph color={numberFlag}>Must contain a number</Paragraph>
-      <Paragraph color={pwdLengthFlag}>
-        Must be 8 characters or longer
-      </Paragraph>
-      <Paragraph color={specialCharFlag}>
-        Must contain a special character
-      </Paragraph>
+      <p className={capsLetterFlag}>Must contain 1 Capital Letter</p>
+      <p className={numberFlag}>Must contain a number</p>
+      <p className={pwdLengthFlag}>Must be 8 characters or longer</p>
+      <p className={specialCharFlag}>Must contain a special character</p>
     </>
   );
 };

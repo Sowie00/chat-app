@@ -39,3 +39,34 @@ module.exports.login = async (req, res, next) => {
     next(ex);
   }
 };
+
+module.exports.setProfilePicture = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const profilePic = req.body.image;
+    const userData = await User.findByIdAndUpdate(userId, {
+      isProfilePicSet: true,
+      profilePic,
+    });
+    return res.json({
+      isSet: userData.isProfilePicSet,
+      image: userData.profilePic,
+    });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      "email",
+      "username",
+      "profilePic",
+      "_id",
+    ]);
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};

@@ -66,13 +66,17 @@ const Login = () => {
   };
   return (
     <>
-      <FormContainer>
-        <form onSubmit={(event) => handleSubmit(event)}>
-          <div className="brand">
-            <img src={logo} alt="" />
-            <h1>C H A T</h1>
+      <div className="h-screen w-screen flex flex-col justify-center gap-2 items-center bg-[#131324]">
+        <form
+          className="flex flex-col gap-8 bg-[#00000176] px-28 py-14 rounded-3xl"
+          onSubmit={(event) => handleSubmit(event)}
+        >
+          <div className="flex items-center gap-4 justify-center ">
+            <img className="h-20 animate-spin" src={logo} alt="" />
+            <h1 className="text-white uppercase text-xl">C H A T</h1>
           </div>
           <input
+            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="text"
             name="username"
             id="username"
@@ -82,12 +86,13 @@ const Login = () => {
             value={enteredUsername}
           />
           {usernameInputHasError && (
-            <Paragraph color="red">Username field cannot be empty</Paragraph>
+            <p className="text-red-500">Username field cannot be empty</p>
           )}
           {enteredUsernameIsValid && (
-            <Paragraph color="green">Looks good!</Paragraph>
+            <p className="text-green-500">Looks good!</p>
           )}
           <input
+            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="password"
             name="password"
             id="password"
@@ -97,92 +102,31 @@ const Login = () => {
             value={enteredPassword}
           />
           {passwordInputHasError && (
-            <Paragraph color="red">Password field cannot be empty</Paragraph>
+            <p className="text-red-500">Password field cannot be empty</p>
           )}
           {enteredPasswordIsValid && (
-            <Paragraph color="green">Looks good!</Paragraph>
+            <p className="text-green-500">Looks good!</p>
           )}
-          <button type="submit">Login</button>
-          <span>
-            Don't have an account? <Link to="/register">Register</Link>
+          <button
+            className="bg-teal-400 text-white px-2 py-4 border-none font-bold cursor-pointer rounded-lg text-base uppercase transition-all ease-in-out duration-500 hover:bg-[#591c85]"
+            type="submit"
+          >
+            Login
+          </button>
+          <span className="text-white">
+            Don't have an account?{" "}
+            <Link
+              className="text-[#4e0eff] font-bold no-underline"
+              to="/register"
+            >
+              Register
+            </Link>
           </span>
         </form>
-      </FormContainer>
+      </div>
       <ToastContainer />
     </>
   );
 };
-
-const FormContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-  background-color: #131324;
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    img {
-      height: 5rem;
-    }
-    h1 {
-      color: white;
-      text-transform: uppercase;
-    }
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    background-color: #00000176;
-    padding: 3rem 5rem;
-    border-radius: 2rem;
-    input {
-      background-color: transparent;
-      padding: 1rem;
-      border: 0.1rem solid teal;
-      border-radius: 0.4rem;
-      color: white;
-      font-size: 1rem;
-      &:focus {
-        border: 0.1rem solid #09a2f4;
-        outline: none;
-        background-color: transparent;
-      }
-    }
-    button {
-      background-color: teal;
-      color: white;
-      padding: 1rem 2rem;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 0.4rem;
-      font-size: 1rem;
-      text-transform: uppercase;
-      transition: 0.5s ease-in-out;
-      &:hover {
-        background-color: #591c85;
-      }
-    }
-    span {
-      color: white;
-      a {
-        color: #4e0eff;
-        font-weight: bold;
-        text-decoration: none;
-      }
-    }
-  }
-`;
-
-const Paragraph = styled.div`
-  color: ${(props) => props.color};
-`;
 
 export default Login;
