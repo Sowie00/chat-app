@@ -1,7 +1,6 @@
 import React from "react";
 import Robot from "../assets/Robot.gif";
 const Welcome = ({ currentUser }) => {
-  console.log(currentUser);
   return (
     <div className="flex justify-center items-center flex-col text-white">
       <img className="h-80" src={Robot} alt="Robot" />

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import logo from "../assets/Logo.png";
 const Contacts = ({ contacts, currentUser, changeChat }) => {
   const [loggedInUsername, setLoggedInUsername] = useState(undefined);
@@ -17,8 +16,6 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
     setSelectedContact(index);
     changeChat(contact);
   };
-
-  console.log(selectedContact);
 
   return (
     <>
