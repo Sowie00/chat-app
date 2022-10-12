@@ -140,6 +140,7 @@ const Register = () => {
     resetEmailInput();
     resetPasswordInput();
     resetConfirmPasswordInput();
+    setPwdRequisite(false);
   };
   return (
     <>
