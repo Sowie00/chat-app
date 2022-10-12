@@ -17,8 +17,4 @@ const PasswordRequisite = ({
   );
 };
 
-const Paragraph = styled.p`
-  color: ${(props) => props.color};
-`;
-
 export default PasswordRequisite;

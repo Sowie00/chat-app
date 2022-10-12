@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getAllUsersRoute } from "../utils/apiRoutes";
+import { io } from "socket.io-client";
+import { getAllUsersRoute, host } from "../utils/apiRoutes";
+import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
+import Welcome from "../components/Welcome";
+
 const Chat = () => {
+  const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [activeChat, setActiveChat] = useState(undefined);
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,10 +22,18 @@ const Chat = () => {
         navigate("/login");
       } else {
         setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+        setIsLoaded(true);
       }
     };
     getCurrentUser();
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser._id);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -35,35 +50,29 @@ const Chat = () => {
     };
     getUsers();
   }, [currentUser]);
+  const handleChatChange = (chat) => {
+    setActiveChat(chat);
+  };
   return (
-    <Container>
-      <SecondContainer>
-        <Contacts contacts={contacts} currentUser={currentUser} />
-      </SecondContainer>
-    </Container>
+    <div className="h-screen w-screen flex flex-col justify-center gap-4 items-center bg-[#131324]">
+      <div className=" h-chatH w-chatW bg-[#00000076] grid grid-cols-contactsContainerSmall sm:grid-cols-contactsContainer">
+        <Contacts
+          contacts={contacts}
+          currentUser={currentUser}
+          changeChat={handleChatChange}
+        />
+        {isLoaded && activeChat === undefined ? (
+          <Welcome currentUser={currentUser} />
+        ) : (
+          <ChatContainer
+            activeChat={activeChat}
+            currentUser={currentUser}
+            socket={socket}
+          />
+        )}
+      </div>
+    </div>
   );
 };
-
-const Container = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-  background-color: #131324;
-`;
-
-const SecondContainer = styled.div`
-  height: 85vh;
-  width: 85vw;
-  background-color: #030202;
-  display: grid;
-  grid-template-columns: 25% 75%;
-  @media screen and (min-width: 720px) and (max-width: 1080px) {
-    grid-template-columns: 35% 65%;
-  }
-`;
 
 export default Chat;

@@ -68,15 +68,15 @@ const Login = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center gap-2 items-center bg-[#131324]">
         <form
-          className="flex flex-col gap-8 bg-[#00000176] px-28 py-14 rounded-3xl"
+          className="flex flex-col gap-8 bg-[#00000176] px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
           onSubmit={(event) => handleSubmit(event)}
         >
           <div className="flex items-center gap-4 justify-center ">
-            <img className="h-20 animate-spin" src={logo} alt="" />
+            <img className=" h-10 sm:h-20 animate-spin" src={logo} alt="" />
             <h1 className="text-white uppercase text-xl">C H A T</h1>
           </div>
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="text"
             name="username"
             id="username"
@@ -92,7 +92,7 @@ const Login = () => {
             <p className="text-green-500">Looks good!</p>
           )}
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="password"
             name="password"
             id="password"

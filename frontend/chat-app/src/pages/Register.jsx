@@ -145,15 +145,15 @@ const Register = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center gap-2 items-center bg-[#131324]">
         <form
-          className="flex flex-col gap-8 bg-[#00000176] px-28 py-14 rounded-3xl"
+          className="flex flex-col gap-5 sm:gap-8 bg-[#00000176] px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
           onSubmit={(event) => handleSubmit(event)}
         >
           <div className="flex items-center gap-4 justify-center ">
-            <img className="h-20 animate-spin" src={logo} alt="" />
+            <img className="h-10 sm:h-20 animate-spin" src={logo} alt="" />
             <h1 className="text-white uppercase text-xl">C H A T</h1>
           </div>
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="text"
             name="username"
             id="username"
@@ -169,7 +169,7 @@ const Register = () => {
             <p className="text-green-500">Looks good!</p>
           )}
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="email"
             name="email"
             id="email"
@@ -185,7 +185,7 @@ const Register = () => {
           )}
           {enteredEmailIsValid && <p className="text-green-500">Looks good!</p>}
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="password"
             name="password"
             id="password"
@@ -215,7 +215,7 @@ const Register = () => {
             <p className="text-green-500">Looks good!</p>
           )}
           <input
-            className="bg-transparent p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
+            className="bg-transparent p-2 sm:p-4 border-2 border-solid border-teal-400 rounded-lg text-white text-base focus:border-2 focus:border-solid focus:border-blue-500 focus:outline-none focus:bg-transparent"
             type="Password"
             name="confirmPassword"
             id="confirmPassword"
@@ -228,7 +228,7 @@ const Register = () => {
             <p className="text-red-500">Password does not match!</p>
           )}
           {enteredConfirmPasswordIsValid && (
-            <p className="text-green">Passwords match!</p>
+            <p className="text-green-500">Passwords match!</p>
           )}
           <button
             className="bg-teal-400 text-white px-2 py-4 border-none font-bold cursor-pointer rounded-lg text-base uppercase transition-all ease-in-out duration-500 hover:bg-[#591c85]"

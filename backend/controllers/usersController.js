@@ -44,10 +44,14 @@ module.exports.setProfilePicture = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const profilePic = req.body.image;
-    const userData = await User.findByIdAndUpdate(userId, {
-      isProfilePicSet: true,
-      profilePic,
-    });
+    const userData = await User.findByIdAndUpdate(
+      userId,
+      {
+        isProfilePicSet: true,
+        profilePic,
+      },
+      { new: true }
+    );
     return res.json({
       isSet: userData.isProfilePicSet,
       image: userData.profilePic,
