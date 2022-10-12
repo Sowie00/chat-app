@@ -1,25 +1,6 @@
-frontend/chat-app/node_modules
-frontend/chat-app/.pnp
-frontend/chat-app/.pnp.js
-
-# testing
-frontend/chat-app/coverage
-
-# production
-frontend/chat-app/build
-
-# misc
-frontend/chat-app/.DS_Store
-frontend/chat-app/.env.local
-frontend/chat-app/.env.development.local
-frontend/chat-app/.env.test.local
-frontend/chat-app/.env.production.local
-
-frontend/chat-app/npm-debug.log*
-frontend/chat-app/yarn-debug.log*
-frontend/chat-app/yarn-error.log*
-
-backend/.env
-backend/node_modules
-backend/.pnp
-backend/.pnp.js
+.DS_Store
+node_modules/
+.env
+*.orig
+.idea/
+.vscode/
