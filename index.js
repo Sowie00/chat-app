@@ -28,7 +28,7 @@ mongoose
 const server = require("http").createServer(app);
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://mern-chattt.herokuapp.com/",
     methods: ["GET", "POST"],
     credentials: true,
   },
