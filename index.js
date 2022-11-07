@@ -25,28 +25,48 @@ mongoose
     console.log(err);
   });
 
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log("Server running on port 8000...");
-});
-
+const server = require("http").createServer(app);
 const io = socket(server, {
   cors: {
     origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
-global.onlineUsers = new Map();
+server.listen(process.env.PORT || 8000, () => {
+  console.log("Server running on port 8000...");
+});
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
 io.on("connection", (socket) => {
-  global.chatSocket = socket;
   socket.on("add-user", (userId) => {
-    onlineUsers.set(userId, socket.id);
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
   });
 
-  socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("msg-receive", data.message);
-    }
+  socket.on("send-msg", ({ from, to, message }) => {
+    const user = getUser(to);
+    console.log(user);
+    io.to(user.socketId).emit("getMessage", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("a user disconnected");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
   });
 });

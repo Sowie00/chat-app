@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -26,7 +25,7 @@ const Chat = () => {
       }
     };
     getCurrentUser();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (currentUser) {
@@ -49,13 +48,13 @@ const Chat = () => {
       }
     };
     getUsers();
-  }, [currentUser]);
+  }, [currentUser, navigate]);
   const handleChatChange = (chat) => {
     setActiveChat(chat);
   };
   return (
     <div className="h-screen w-screen flex flex-col justify-center gap-4 items-center bg-[#131324]">
-      <div className=" h-chatH w-chatW bg-[#00000076] grid grid-cols-contactsContainerSmall sm:grid-cols-contactsContainer">
+      <div className=" h-chatH w-chatW bg-[#00000076] rounded-lg shadow-2xl shadow-indigo-500 grid grid-cols-contactsContainerSmall sm:grid-cols-contactsContainer">
         <Contacts
           contacts={contacts}
           currentUser={currentUser}

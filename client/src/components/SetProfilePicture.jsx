@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
 import axios from "axios";
-import loader from "../assets/loader.gif";
 import { setProfilePictureRoute } from "../utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "./Loading";
 
 const SetProfilePicture = () => {
   const api = `https://api.multiavatar.com/2345674`;
@@ -25,7 +25,7 @@ const SetProfilePicture = () => {
     if (!localStorage.getItem("chat-app-user")) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
@@ -66,14 +66,12 @@ const SetProfilePicture = () => {
       setIsLoading(false);
     };
     fetchPictures().catch(console.error);
-  }, []);
+  }, [api]);
 
   return (
     <>
       {isLoading ? (
-        <div className="flex justify-center items-center flex-col gap-12 bg-[#131324] h-screen w-screen">
-          <img width={150} height={150} src={loader} alt="loader" />
-        </div>
+        <Loading />
       ) : (
         <div className="flex justify-center items-center flex-col gap-12 bg-[#131324] h-screen w-screen">
           <div>

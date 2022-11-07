@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Logo.png";
 import useInput from "../hooks/use-input";
@@ -110,7 +109,7 @@ const Register = () => {
     if (localStorage.getItem("chat-app-user")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -146,7 +145,7 @@ const Register = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center gap-2 items-center bg-[#131324]">
         <form
-          className="flex flex-col gap-5 sm:gap-8 bg-[#00000176] px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
+          className="flex flex-col gap-5 sm:gap-8 bg-[#00000176] shadow-2xl shadow-indigo-500 px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
           onSubmit={(event) => handleSubmit(event)}
         >
           <div className="flex items-center gap-4 justify-center ">

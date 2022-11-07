@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Logo.png";
 import useInput from "../hooks/use-input";
@@ -41,7 +40,7 @@ const Login = () => {
     if (localStorage.getItem("chat-app-user")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,11 +67,11 @@ const Login = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center gap-2 items-center bg-[#131324]">
         <form
-          className="flex flex-col gap-8 bg-[#00000176] px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
+          className="flex flex-col gap-8 bg-[#00000176] shadow-2xl shadow-indigo-500 px-6 sm:px-28 py-6 sm:py-14 rounded-3xl"
           onSubmit={(event) => handleSubmit(event)}
         >
           <div className="flex items-center gap-4 justify-center ">
-            <img className=" h-10 sm:h-20 animate-spin" src={logo} alt="" />
+            <img className=" h-10 sm:h-20" src={logo} alt="" />
             <h1 className="text-white uppercase text-xl">C H A T</h1>
           </div>
           <input
